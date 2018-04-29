@@ -6,16 +6,19 @@ import flask
 import os
 import uuid
 from dash import DashResponse
-
+from declarations import User
 import plotly.graph_objs as go
 from sqlalchemy import create_engine, exists
 from sqlalchemy.orm import relationship, sessionmaker
 import declarations as dc
-
+from flask import Flask, request, render_template, flash, abort, session, redirect
+from flask import make_response
 from sqlalchemy.ext.declarative import declarative_base
 
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
+
+users = dict()
 
 def get_session():
     engine = create_engine('sqlite:///db.sqlite3')
@@ -41,7 +44,7 @@ def layout(id):
 
 # Barebones layout
 app.layout = html.Div([
-    dcc.Interval(id='refresh', interval=5000),
+    dcc.Interval(id='refresh', interval=2000),
 # Edit this object!
     html.Div(
         [
@@ -55,8 +58,7 @@ app.layout = html.Div([
                             html.Div(id='graph', className="container")
 
                         ],
-                        className='six columns',
-                        style={'margin-top': '10'}
+                        className='twelve columns'
                     ),
 
                 ],
@@ -66,14 +68,15 @@ app.layout = html.Div([
                 [
                     html.Div([], id='open_div', className="container"),
                     html.Div([], id='close_div', className="container"),
-                    html.Button('Tuleb', id='yes'),
-                    html.Button('Ei Tule', id='no'),
+                    html.Button('Tuleb', id='yes', className='button-primary four columns'),
+                    html.Div([], className='four columns'),
+                    html.Button('Ei Tule', id='no', className='button-primary four columns'),
                 ],
-                className='six columns'
+                className='eight colums columns'
             ),
         ],
 
-        className='ten columns offset-by-one'
+        className='six columns offset-by-three'
     )
 
 ])
@@ -102,6 +105,9 @@ def get_voted_graph(curr_state, id):
 
     return dcc.Graph(id='main_graph',
                      figure=figure,
+                     style={
+                         'height': 400
+                     },
                      config={
                          'displayModeBar': False,
                      })
@@ -136,7 +142,7 @@ def display_layout():
 @app.callback(
     Output('open_div', 'children'),
     [Input('yes', 'n_clicks')])
-def open(n_click):
+def yes(n_click):
     session = get_session()
     if n_click is not None:
         curr_state = session.query(dc.Current_State).all()[0]
@@ -148,12 +154,13 @@ def open(n_click):
                 vote = dc.Votes(uuid=id, state=curr_state.state, vote='yes')
                 session.add(vote)
                 session.commit()
+                session.close()
 
 
 @app.callback(
     Output('close_div', 'children'),
     [Input('no', 'n_clicks')])
-def close(n_click):
+def no(n_click):
     session = get_session()
     if n_click is not None:
         curr_state = session.query(dc.Current_State).all()[0]
@@ -165,15 +172,31 @@ def close(n_click):
                 vote = dc.Votes(uuid=id, state=curr_state.state, vote='no')
                 session.add(vote)
                 session.commit()
+                session.close()
 
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 static_route = '/static/<path:path>'
 
-@server.route('/vote')
+def save_user(username, email):
+    #Session = sessionmaker(bind=dc.engine)
+    user_id = str(uuid.uuid4())
+    users[user_id] = User(name=username, email=email)
+    #session = Session()
+    #session.add(user_added)
+    #session.commit()
+    #session.close()
+    return user_id
+
+@server.route('/register_vote')
 def vote():
-    root_dir = os.getcwd()
-    return '{["test"]}'
+    username = flask.request.args.get('email')
+    email = flask.request.args.get('name')
+    user_added = save_user(username, email)
+    response = make_response(redirect('/start'))
+    response.set_cookie('watcher_id', str.encode(user_added))
+    return response
+
 
 
 @server.route('/start')
@@ -189,4 +212,4 @@ def serve_static(path):
         os.path.join(root_dir, 'static'), path
 )
 if __name__ == '__main__':
-    app.run_server(threaded=True, port=8080)
+    app.run_server(port=8888)

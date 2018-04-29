@@ -2,11 +2,19 @@ from sqlalchemy import create_engine, exists
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String
-import declarations as dc
 
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
+
+
+class User(Base):
+    __tablename__ = 'User'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+
 
 class Current_State(Base):
     __tablename__ = 'Current_State'
@@ -42,6 +50,8 @@ connection = engine.connect()
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
+def get_session():
+    return Session()
 
 def init():
     state = State(id=0, name='Algus', text = 'KAS SA TAHAD TEADA, KUIDAS KÕIK TULEVIKUS LÄHEB?', next_yes =1, next_no=1000 )

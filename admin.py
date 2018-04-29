@@ -14,9 +14,9 @@ app.layout =html.Div(
                     html.Div(
                         [
                             html.P('Press button:'),
-                            html.Button('Start voting', id='start'),
+                            html.Button('Start voting', id='start', className='button-primary'),
                         ],
-                        className='six columns'
+                        className='twelve columns'
                     ),
                 ],
                 className='row'
@@ -30,14 +30,14 @@ app.layout =html.Div(
                             ], id='content', className="container")
 
                         ],
-                        className='six columns',
+                        className='twelve columns',
                         style={'margin-top': '10'}
                     ),
                     html.Div(
                         [
 
                         ],
-                        className='six columns',
+                        className='twelve columns',
                         id = 'graph',
                         style={'margin-top': '10'}
                     ),
@@ -48,10 +48,11 @@ app.layout =html.Div(
                 [
                     html.Div([], id='open_div', className="container"),
                     html.Div([], id='close_div', className="container"),
-                    html.Button('Open voting', id='open'),
-                    html.Button('Close voting', id='close'),
+                    html.Button('Open voting', id='open', className='button-primary four columns'),
+                    html.Div([], className='four columns'),
+                    html.Button('Close voting', id='close', className='button-primary four columns'),
                 ],
-                className='six columns'
+                className='twelve columns'
             ),
         ],
 
@@ -144,6 +145,7 @@ def close(n_click):
 
             return 'Chosen ' + state_next.text
 
+app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 if __name__ == '__main__':
     app.run_server(debug=True)
