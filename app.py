@@ -72,7 +72,7 @@ app.layout = html.Div([
                     html.Div([], className='four columns'),
                     html.Button('Ei Tule', id='no', className='button-primary four columns'),
                 ],
-                className='eight colums columns'
+                className='eight columns'
             ),
         ],
 

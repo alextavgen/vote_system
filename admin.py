@@ -100,7 +100,7 @@ def start(n_click):
         dc.session.query(dc.Current_State).delete()
         dc.session.query(dc.Votes).delete()
         dc.session.commit()
-        curr_state = dc.Current_State(state=0, opened=0)
+        curr_state = dc.Current_State(id=0, state=0, opened=0)
         dc.session.add(curr_state)
         dc.session.commit()
         state = dc.session.query(dc.State).filter(dc.State.id==0).all()
@@ -137,7 +137,11 @@ def close(n_click):
                 next_state_id = state.next_no
             dc.session.query(dc.Current_State).delete()
             dc.session.commit()
-            curr_state = dc.Current_State(state=next_state_id, opened=0)
+            next_state = dc.session.query(dc.State).filter(dc.State.id == next_state_id).first()
+            if next_state.immediate == 0:
+                curr_state = dc.Current_State(state=next_state_id, opened=0)
+            else:
+                curr_state = dc.Current_State(state=next_state_id, opened=1)
             dc.session.add(curr_state)
             dc.session.commit()
 
@@ -148,4 +152,4 @@ def close(n_click):
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(port=8050, debug=True)

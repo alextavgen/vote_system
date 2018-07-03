@@ -27,8 +27,9 @@ class State(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     text = Column(String, nullable=False)
-    next_yes= Column(Integer, nullable=False)
+    next_yes = Column(Integer, nullable=False)
     next_no = Column(Integer, nullable=False)
+    immediate = Column(Integer, nullable=False)
 
 
 class Votes(Base):
@@ -54,64 +55,139 @@ def get_session():
     return Session()
 
 def init():
-    state = State(id=0, name='Algus', text = 'KAS SA TAHAD TEADA, KUIDAS KÕIK TULEVIKUS LÄHEB?', next_yes =1, next_no=1000 )
-    state1 = State(id=1, name='Tehnika (vol 1.)', text = 'Tehniline tulevik (vol 1.)', next_yes = 2, next_no = 3)
-    state2 = State(id=2, name='Tehnika (vol 2.)', text = 'Tehniline tulevik (vol 2.)', next_yes = 4, next_no = 3)
-    state3 = State(id=3, name='Multikultuur (vol 1.)', text = 'Multikultuurne tulevik (vol. 1)', next_yes = 11, next_no = 12)
-    state4 = State(id=4, name='Katastroof', text = 'Katastroof', next_yes = 5, next_no = 5)
-    state5 = State(id=5, name='Võlumaailm', text = 'Võlumaailm', next_yes = 6, next_no = 6)
-    state6 = State(id=6, name='Multikultuur(vol.1)', text = 'Multikultuurne tulevik (vol.1)', next_yes = 7, next_no = 8)
-    state7 = State(id=7, name='Multikultuur(vol.2)', text = 'Multikultuurne tulevik (vol.2)', next_yes = 8, next_no = 8)
-    state8 = State(id=8, name='Kosmos', text = 'Kosmiline tulevik', next_yes = 500, next_no = 9)
-    state9 = State(id=9, name='Õkoriik', text = 'Öko tulevik', next_yes = 500, next_no = 10)
-    state10 = State(id=10, name='Võlumaailma laul', text = 'Võlumaailma laul', next_yes = 500, next_no = 500)
+    state = State(id=0, name='Algus', text ='Intro', next_yes=100, next_no=1000, immediate=0)
+    state100 = State(id=100, name='G_ITU', text='Информационно - технологическое государство утопия', next_yes=101, next_no=110, immediate=0)
+    state101 = State(id=101, name='G_ITA', text='Информационно - технологическое государство антиутопия', next_yes=102, next_no=110, immediate=0)
+    state102 = State(id=102, name='G_ITK', text='Информационно технологическая катастрофа', next_yes=500, next_no=500, immediate=0)
 
-    state11 = State(id=11, name='Multikultuur (vol 2.)', text = 'Multikultuurne tulevik (vol.2)', next_yes = 12, next_no = 13)
-    state12 = State(id=12, name='Katastroof', text = 'Katastroof', next_yes = 666, next_no = 17)
-    state17 = State(id=17, name='Võlumaailm', text = 'Võlumaailm', next_yes = 18, next_no = 18)
-    state18 = State(id=18, name='Õkoriik', text = 'Öko tulevik', next_yes = 500, next_no = 19)
-    state19 = State(id=19, name='Kosmos', text = 'Kosmiline tulevik', next_yes = 500, next_no = 20)
-    state20 = State(id=20, name='Võlumaailma laul', text = 'Võlumaailma laul', next_yes = 500, next_no = 500)
 
-    state13 = State(id=13, name='Võlumaailm', text = 'Võlumaailm', next_yes = 14, next_no = 14)
-    state14 = State(id=14, name='Katastroof', text = 'Katastroof', next_yes = 666, next_no = 15)
-    state15 = State(id=15, name='Õkoriik', text = 'Öko tulevik', next_yes = 500, next_no = 16)
-    state16 = State(id=16, name='Kosmos', text = 'Kosmiline tulevik', next_yes = 500, next_no = 20)
 
-    state1000 = State(id=1000, name='Lõpp', text = 'ETENDUS ON LÕPPENUD. PILETIRAHA TAGASI EI SAA', next_yes = 0, next_no = 0)
-    state666 = State(id=666, name='LÕPP JA VIIMANE EESTLANE', text = 'LÕPP JA VIIMANE EESTLANE', next_yes = 500, next_no = 20)
-    state500 = State(id=500, name='LÕPP JA HÜMN', text = 'LÕPP JA HÜMN', next_yes = 1001, next_no = 1001)
-    state1001 = State(id=1001, name='KAS SA TAHAD VALIDA KUIDAS SEE KÕIK TULEVIKUS LÄHEB?', text = 'KAS SA TAHAD VALIDA KUIDAS SEE KÕIK TULEVIKUS LÄHEB?', next_yes = 9999, next_no = 9998)
+    state105 = State(id=110, name='G_M/N', text='Мультикультурное государство/Национально-языковое государство', next_yes=200, next_no=400, immediate=1)
+
+    state200 = State(id=200, name='G_MKU', text='Мультикультурное государство утопия', next_yes=201, next_no=205, immediate=0)
+    state201 = State(id=201, name='G_MKA', text='Мультикультурное государство антиутопия', next_yes=202, next_no=206, immediate=0)
+    state202 = State(id=202, name='G_MKK', text='Мультикультурное государство катастрофа', next_yes=500, next_no=500, immediate=0)
+
+    state205 = State(id=205, name='G_K/O', text='Космическо - колониальное государство утопия/ЭКО государство утопия',
+                     next_yes=300, next_no=500, immediate=1)
+
+    state206 = State(id=206, name='G_K/O', text='Космическо - колониальное государство утопия/Национально-языковое государство',
+                     next_yes=410, next_no=300, immediate=1)
+
+    state300 = State(id=300, name='G_KKU', text='Космическо - колониальное государство утопия', next_yes=301, next_no=305, immediate=0)
+    state301 = State(id=301, name='G_KKA', text='Космическо - колониальное государство антиутопия', next_yes=5000, next_no=305, immediate=0)
+
+    state305 = State(id=305, name='G_ITK', text='ЭКО государство утопия/Национально-языковое государство',
+                     next_yes=550, next_no=460, immediate=1)
+
+    state550 = State(id=550, name='G_ORU', text='ЭКО государство утопия', next_yes=5000, next_no=551, immediate=0)
+    state551 = State(id=551, name='G_ORA', text='ЭКО государство антиутопия', next_yes=552, next_no=505, immediate=0)
+    state552 = State(id=552, name='G_ORK', text='ЭКО государство катастрофа', next_yes=5000, next_no=5000, immediate=0)
+
+    state450 = State(id=450, name='G_NYU', text='Национально-языковое государство', next_yes=5000, next_no=5000,immediate=0)
+
+    state460 = State(id=460, name='G_NYU', text='Национально-языковое государство', next_yes=5000, next_no=560,immediate=0)
+
+    state560 = State(id=560, name='G_ORU', text='ЭКО государство утопия', next_yes=5000, next_no=562, immediate=0)
+    state552 = State(id=562, name='G_ORK', text='ЭКО государство катастрофа', next_yes=5000, next_no=5000,immediate=0)
+
+    state400 = State(id=400, name='G_NYU', text='Национально-языковое государство', next_yes=999, next_no=999,immediate=0)
+
+    state410 = State(id=410, name='G_NYU', text='Национально-языковое государство', next_yes=5000, next_no=999,immediate=0) #left side
+    state415 = State(id=415, name='G_K/O',
+                     text='Космическо - колониальное государство утопия/ЭКО государство утопия',
+                     next_yes=310, next_no=540, immediate=1)
+    state330 = State(id=330, name='G_KKU', text='Космическо - колониальное государство утопия', next_yes=331, next_no=530,immediate=0)
+    state331 = State(id=331, name='G_KKA', text='Космическо - колониальное государство антиутопия', next_yes=5000,
+                     next_no=530,immediate=0)
+    state530 = State(id=530, name='G_ORU', text='ЭКО государство утопия', next_yes=5000, next_no=532,immediate=0)
+    state532 = State(id=532, name='G_ORK', text='ЭКО государство катастрофа', next_yes=5000, next_no=5000,immediate=0)
+
+    state540 = State(id=540, name='G_ORU', text='ЭКО государство утопия', next_yes=5000, next_no=541,immediate=0)
+    state541 = State(id=541, name='G_ORA', text='ЭКО государство антиутопия', next_yes=542, next_no=340,immediate=0)
+    state542 = State(id=542, name='G_ORK', text='ЭКО государство катастрофа', next_yes=5000, next_no=5000,immediate=0)
+    state340 = State(id=340, name='G_KKU', text='Космическо - колониальное государство утопия', next_yes=5000,
+                     next_no=500,immediate=0)
+
+
+    state500 = State(id=500, name='G_ORU', text='ЭКО государство утопия', next_yes=5000, next_no=501, immediate=0)
+    state501 = State(id=501, name='G_ORA', text='ЭКО государство антиутопия', next_yes=502, next_no=505, immediate=0)
+    state502 = State(id=502, name='G_ORK', text='ЭКО государство катастрофа', next_yes=5000, next_no=5000, immediate=0)
+
+    state505 = State(id=505, name='G_K/N', text='Космическо - колониальное государство утопия/Национально-языковое государство',
+                     next_yes=310, next_no=400, immediate=1)
+
+    state310 = State(id=310, name='G_KKU', text='Космическо - колониальное государство утопия', next_yes=311, next_no=9,immediate=0)
+    state311 = State(id=311, name='G_KKA', text='Космическо - колониальное государство антиутопия', next_yes=5000,
+                     next_no=9, immediate=0)
+
+    state420 = State(id=420, name='G_NYU', text='Национально-языковое государство', next_yes=5000, next_no=5000, immediate=0)
+
+    state430 = State(id=430, name='G_NYU', text='Национально-языковое государство', next_yes=5000, next_no=5000, immediate=0)
+    state320 = State(id=320, name='G_KKU', text='Космическо - колониальное государство утопия', next_yes=5000, next_no=5000, immediate=0)
+
+
+
+    stateDummy = State(id=999, name='DUMMY', text='DUMMY NOT DEFINED', next_yes=999, next_no=999,immediate=0)
+
+    state5000 = State(id=5000, name='E_UTO', text='Exit финал утопий HÜMN', next_yes=5000, next_no=5000, immediate=0)
+
 
     session.add(state)
-    session.add(state1)
-    session.add(state2)
-    session.add(state3)
-    session.add(state4)
-    session.add(state5)
+    session.add(state100)
+    session.add(state101)
+    session.add(state102)
+    session.add(state105)
 
-    session.add(state6)
-    session.add(state7)
-    session.add(state8)
-    session.add(state9)
-    session.add(state10)
-    session.add(state11)
+    session.add(state200)
+    session.add(state201)
+    session.add(state202)
+    session.add(state205)
+    session.add(state206)
 
-    session.add(state12)
-    session.add(state13)
-    session.add(state14)
-    session.add(state15)
-    session.add(state16)
-    session.add(state17)
+    session.add(state300)
+    session.add(state301)
+    session.add(state305)
+    session.add(state310)
+    session.add(state311)
+    session.add(state320)
+    session.add(state330)
+    session.add(state331)
+    session.add(state340)
 
-    session.add(state18)
-    session.add(state19)
-    session.add(state20)
-    session.add(state666)
+    session.add(state400)
+    session.add(state410)
+    session.add(state415)
+    session.add(state420)
+    session.add(state430)
+    session.add(state450)
+    session.add(state460)
+
     session.add(state500)
-    session.add(state1000)
+    session.add(state501)
+    session.add(state502)
+    session.add(state505)
+    session.add(state530)
+    session.add(state532)
+    session.add(state540)
+    session.add(state541)
+    session.add(state542)
+    session.add(state550)
+    session.add(state551)
+    session.add(state552)
+    session.add(state560)
 
-    session.add(state1001)
+    session.add(state5000)
+    session.add(stateDummy)
+
+
+
+
+
+
+
     session.commit()
 
+if __name__ == '__main__':
+    init()
 #init()
