@@ -4,16 +4,18 @@ from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Integer, String
 
 from sqlalchemy.ext.declarative import declarative_base
+import os
+
 
 Base = declarative_base()
 
-
+# export SQLALCHEMY_DATABASE_URI=mysql+pymysql://ev100:ev100@127.0.0.1:3306/ev100
 
 class User(Base):
     __tablename__ = 'User'
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False)
 
 
 class Current_State(Base):
@@ -25,8 +27,8 @@ class Current_State(Base):
 class State(Base):
     __tablename__ = 'State'
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    text = Column(String, nullable=False)
+    name = Column(String(50), nullable=False)
+    text = Column(String(255), nullable=False)
     next_yes = Column(Integer, nullable=False)
     next_no = Column(Integer, nullable=False)
     immediate = Column(Integer, nullable=False)
@@ -35,13 +37,13 @@ class State(Base):
 class Votes(Base):
     __tablename__ = 'votes'
     id = Column(Integer, primary_key=True)
-    uuid = Column(String, nullable=False)
+    uuid = Column(String(255), nullable=False)
     state = Column(Integer, nullable=False)
-    vote = Column(String, nullable=False)
+    vote = Column(String(10), nullable=False)
 
 
 
-engine = create_engine('sqlite:///db.sqlite3')
+engine = create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
 '''
     sqlite:///:memory: (or, sqlite://)
     sqlite:///relative/path/to/file.db

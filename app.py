@@ -21,7 +21,7 @@ app = dash.Dash(__name__, server=server)
 users = dict()
 
 def get_session():
-    engine = create_engine('sqlite:///db.sqlite3')
+    engine = create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
     engine.connect()
     Session = sessionmaker(bind=engine)
     return Session()

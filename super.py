@@ -13,7 +13,7 @@ app = Flask(__name__)
 previous_state = dc.Current_State(id=0, state=0, opened=0)
 
 def get_session():
-    engine = create_engine('sqlite:///db.sqlite3')
+    engine = create_engine(os.environ['SQLALCHEMY_DATABASE_URI'])
     engine.connect()
     Session = sessionmaker(bind=engine)
     return Session()
