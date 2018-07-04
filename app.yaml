@@ -7,6 +7,9 @@ entrypoint: gunicorn -b :$PORT app:server
 runtime_config:
   python_version: 3
 
+beta_settings:
+    cloud_sql_instances: vote-system-209121:europe-west1:vote-system-db
+
 env_variables:
     # Replace user, password, database, and instance connection name with the values obtained
     # when configuring your Cloud SQL instance.
