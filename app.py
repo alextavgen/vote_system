@@ -5,7 +5,7 @@ import dash_html_components as html
 import flask
 import os
 import uuid
-from dash import DashResponse
+from dashresponse import DashResponse
 from declarations import User
 import plotly.graph_objs as go
 from sqlalchemy import create_engine, exists
@@ -14,7 +14,6 @@ import declarations as dc
 from flask import Flask, request, render_template, flash, abort, session, redirect
 from flask import make_response
 from sqlalchemy.ext.declarative import declarative_base
-
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
 
