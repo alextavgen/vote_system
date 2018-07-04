@@ -120,13 +120,17 @@ def get_voted_graph(curr_state, id):
     events=[Event('refresh', 'interval')])
 def display_layout():
     session = get_session()
-    curr_state = session.query(dc.Current_State).all()[0]
+
+    if session.query(dc.Current_State).all():
+        curr_state = session.query(dc.Current_State).all()[0]
+    else:
+        curr_state = None
+
     id = flask.request.cookies.get('watcher_id')
 
-    if curr_state.opened == 1:
+    if curr_state and curr_state.opened == 1:
         voted = session.query(dc.Votes).filter(dc.Votes.uuid == id).filter(dc.Votes.state == curr_state.state).all()
-        if len(voted) == 0:
-
+        if len(voted) == 0 and session.query(dc.State).filter(dc.State.id==curr_state.state).all():
             state = session.query(dc.State).filter(dc.State.id==curr_state.state).all()[0]
 
             response = DashResponse(html.Div(layout(state.text)))
@@ -145,10 +149,13 @@ def display_layout():
 def yes(n_click):
     session = get_session()
     if n_click is not None:
-        curr_state = session.query(dc.Current_State).all()[0]
+        if session.query(dc.Current_State).all():
+            curr_state = session.query(dc.Current_State).all()[0]
+        else:
+            curr_state = None
         id = flask.request.cookies.get('watcher_id')
 
-        if curr_state.opened == 1:
+        if curr_state and curr_state.opened == 1:
             voted = session.query(dc.Votes).filter(dc.Votes.uuid == id).filter(dc.Votes.state == curr_state.state).all()
             if len(voted) == 0:
                 vote = dc.Votes(uuid=id, state=curr_state.state, vote='yes')
@@ -163,10 +170,14 @@ def yes(n_click):
 def no(n_click):
     session = get_session()
     if n_click is not None:
-        curr_state = session.query(dc.Current_State).all()[0]
+        if session.query(dc.Current_State).all():
+            curr_state = session.query(dc.Current_State).all()[0]
+        else:
+            curr_state = None
+
         id = flask.request.cookies.get('watcher_id')
 
-        if curr_state.opened == 1:
+        if curr_state and curr_state.opened == 1:
             voted = session.query(dc.Votes).filter(dc.Votes.uuid == id).filter(dc.Votes.state == curr_state.state).all()
             if len(voted) == 0:
                 vote = dc.Votes(uuid=id, state=curr_state.state, vote='no')

@@ -90,6 +90,8 @@ def votes_show():
         return None
 
 def wrap_state(state):
+    if not state:
+        return None
     return html.Div([state[0].text])
 
 @app.callback(
@@ -129,25 +131,29 @@ def close(n_click):
             votes_no = dc.session.query(dc.Votes).filter(dc.Votes.state == curr_state.state). \
                 filter(dc.Votes.vote == 'no').all()
 
-            state = dc.session.query(dc.State).filter(dc.State.id == curr_state.state).all()[0]
+            if dc.session.query(dc.State).filter(dc.State.id == curr_state.state).all():
+                state = dc.session.query(dc.State).filter(dc.State.id == curr_state.state).all()[0]
 
-            if len(votes_yes) >= len(votes_no):
-                next_state_id = state.next_yes
+                if len(votes_yes) >= len(votes_no):
+                    next_state_id = state.next_yes
+                else:
+                    next_state_id = state.next_no
+
+                dc.session.query(dc.Current_State).delete()
+                dc.session.commit()
+                next_state = dc.session.query(dc.State).filter(dc.State.id == next_state_id).first()
+                if next_state.immediate == 0:
+                    curr_state = dc.Current_State(state=next_state_id, opened=0)
+                else:
+                    curr_state = dc.Current_State(state=next_state_id, opened=1)
+                dc.session.add(curr_state)
+                dc.session.commit()
+
+                state_next = dc.session.query(dc.State).filter(dc.State.id==next_state_id).all()[0]
+
+                return 'Chosen ' + state_next.text
             else:
-                next_state_id = state.next_no
-            dc.session.query(dc.Current_State).delete()
-            dc.session.commit()
-            next_state = dc.session.query(dc.State).filter(dc.State.id == next_state_id).first()
-            if next_state.immediate == 0:
-                curr_state = dc.Current_State(state=next_state_id, opened=0)
-            else:
-                curr_state = dc.Current_State(state=next_state_id, opened=1)
-            dc.session.add(curr_state)
-            dc.session.commit()
-
-            state_next = dc.session.query(dc.State).filter(dc.State.id==next_state_id).all()[0]
-
-            return 'Chosen ' + state_next.text
+                return None
 
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
