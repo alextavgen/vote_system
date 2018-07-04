@@ -1,4 +1,5 @@
 # [START runtime]
+service: super
 runtime: python
 env: flex
 entrypoint: gunicorn -b :$PORT super:server
