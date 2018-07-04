@@ -23,6 +23,9 @@ html {
 #left{float:left;}
 #right{float:right;}
 #container-text{width:100%;}
+#center{margin:0 auto;width:100px;}
+#center-text{margin:0 auto;width:1000px;}
+#center-result{margin:0 auto;width:800px;}
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301

@@ -10,6 +10,8 @@ import os
 
 app = Flask(__name__)
 
+previous_state = dc.Current_State(id=0, state=0, opened=0)
+
 def get_session():
     engine = create_engine('sqlite:///db.sqlite3')
     engine.connect()
@@ -19,10 +21,12 @@ def get_session():
 
 @app.route('/super/api/call')
 def home():
+    global previous_state
     session = get_session()
     curr_state = session.query(dc.Current_State).all()[0]
     if curr_state.opened == 1:
-        state = session.query(dc.State).filter(dc.State.id == curr_state.id).first()
+        previous_state = curr_state
+        state = session.query(dc.State).filter(dc.State.id == curr_state.state).first()
         votes_yes = session.query(dc.Votes).filter(dc.Votes.state == curr_state.state).filter(
             dc.Votes.vote == 'yes').all()
         votes_no = session.query(dc.Votes).filter(dc.Votes.state == curr_state.state). \
@@ -30,6 +34,10 @@ def home():
 
         message = {'command': 'voting', 'payload': 'Votes Yes ' + str(len(votes_yes)) + '   Votes No ' + str(len(votes_no)),
                    'text': state.text}
+        return json.dumps(message)
+    elif curr_state != previous_state:
+        message = {'command': 'end',
+                   'payload': 'Выбрано ' + session.query(dc.State).filter(dc.State.id == curr_state.state).first().text}
         return json.dumps(message)
     else:
         message = {'command': 'pass',

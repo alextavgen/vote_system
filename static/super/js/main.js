@@ -30,6 +30,7 @@ var timer_set = false;
       $('.result').html(data.payload);
       $('.result-text').html(data.text);
         if (!timer_set) {
+          timeleft = 60;
           var downloadTimer = setInterval(function () {
             timeleft--;
             document.getElementById("countdowntimer").textContent = timeleft < 10 ? "00:0" + timeleft : "00:" + timeleft;
@@ -40,11 +41,15 @@ var timer_set = false;
         }
       }
       else if (data.command==="end"){
-      console.log("command_end");
+        console.log("command_end");
+        $('.result-text').html('');
+        $('.result').html(data.payload);
+        end_played = true;
+        timer_set = false;
+        timeleft = 1;
       if (!end_played){
         end.play();
         console.log("play");
-        end_played = true;
       }
 
     }

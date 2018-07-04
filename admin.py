@@ -151,7 +151,7 @@ def close(n_click):
 
                 state_next = dc.session.query(dc.State).filter(dc.State.id==next_state_id).all()[0]
 
-                return 'Chosen ' + state_next.text
+                return 'Выбрано ' + state_next.text
             else:
                 return None
 
