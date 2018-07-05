@@ -56,4 +56,4 @@ def serve_static(path):
 
 # Default port:
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5000)

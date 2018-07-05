@@ -82,10 +82,13 @@ def votes_show():
         }
 
         return dcc.Graph(id='main_graph',
-                         figure=figure,
-                         config={
-                             'displayModeBar': False,
-                         })
+                     figure=figure,
+                     style={
+                         'height': 400
+                     },
+                     config={
+                         'displayModeBar': False,
+                     })
     else:
         return None
 
@@ -102,7 +105,7 @@ def start(n_click):
         dc.session.query(dc.Current_State).delete()
         dc.session.query(dc.Votes).delete()
         dc.session.commit()
-        curr_state = dc.Current_State(id=0, state=0, opened=0)
+        curr_state = dc.Current_State(id=1, state=1, opened=0)
         dc.session.add(curr_state)
         dc.session.commit()
         state = dc.session.query(dc.State).filter(dc.State.id==0).all()
@@ -158,4 +161,4 @@ def close(n_click):
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 if __name__ == '__main__':
-    app.run_server(port=8050, debug=True)
+    app.run_server(port=8050)

@@ -68,9 +68,9 @@ app.layout = html.Div([
                 [
                     html.Div([], id='open_div', className="container"),
                     html.Div([], id='close_div', className="container"),
-                    html.Button('Tuleb', id='yes', className='button-primary four columns'),
+                    html.Button('Tuleb', id='yes', className='tuleb four columns'),
                     html.Div([], className='four columns'),
-                    html.Button('Ei Tule', id='no', className='button-primary four columns'),
+                    html.Button('Ei Tule', id='no', className='ei-tule four columns'),
                 ],
                 className='eight columns'
             ),
@@ -185,7 +185,8 @@ def no(n_click):
                 session.commit()
                 session.close()
 
-app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
+app.css.append_css({
+    "external_url": "/static/css/app.css"})
 
 static_route = '/static/<path:path>'
 
