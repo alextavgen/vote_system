@@ -35,8 +35,7 @@
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-.tuleb input {
-    background:url(/button_yes.png) no-repeat;
+.button-pic input {
     width: 100px;
     height: 100px;
     border: none;
