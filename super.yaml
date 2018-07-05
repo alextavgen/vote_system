@@ -2,7 +2,7 @@
 service: super
 runtime: python
 env: flex
-entrypoint: gunicorn -b :$PORT super:app.server
+entrypoint: gunicorn -b :$PORT super:app
 
 runtime_config:
   python_version: 3

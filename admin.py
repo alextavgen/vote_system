@@ -82,13 +82,13 @@ def votes_show():
         }
 
         return dcc.Graph(id='main_graph',
-                     figure=figure,
-                     style={
-                         'height': 400
-                     },
-                     config={
-                         'displayModeBar': False,
-                     })
+                         figure=figure,
+                         style={
+                             'height': 400
+                         },
+                         config={
+                             'displayModeBar': False,
+                         })
     else:
         return None
 
