@@ -209,7 +209,6 @@ def vote():
     return response
 
 
-
 @server.route('/start')
 def index():
     resp = flask.make_response(flask.render_template('index.html'))

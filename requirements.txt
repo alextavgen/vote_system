@@ -7,7 +7,7 @@ chardet==3.0.4
 click==6.7
 contextlib2==0.5.5
 cycler==0.10.0
-dash==0.21.0
+-e git+https://github.com/annael/dash.git#egg=dash
 dash-auth==0.0.10
 dash-core-components==0.13.0
 dash-html-components==0.8.0
@@ -44,3 +44,4 @@ traitlets==4.3.2
 urllib3==1.22
 Werkzeug==0.12.2
 PyMySQL==0.9.2
+
